@@ -7,6 +7,78 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <style>
+        /* Magical Easter Egg: Spell Input & Feather */
+    .spell-input-wrapper {
+      position: fixed;
+      top: 0.75rem;
+      right: 1rem;
+      z-index: 60;
+      pointer-events: none;
+    }
+
+    .spell-input {
+      pointer-events: auto;
+      width: 160px;
+      max-width: 45vw;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      background: rgba(15, 23, 42, 0.92);
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      font-family: var(--font-body);
+      outline: none;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65);
+      transition: border-color 160ms ease-out, box-shadow 160ms ease-out,
+        background 160ms ease-out, transform 160ms ease-out;
+      opacity: 0.92;
+    }
+
+    .spell-input::placeholder {
+      color: rgba(249, 250, 251, 0.55);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .spell-input:focus {
+      border-color: rgba(251, 191, 36, 0.85);
+      background: rgba(15, 23, 42, 0.98);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.85);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 720px) {
+      .spell-input-wrapper {
+        top: 0.6rem;
+        right: 0.8rem;
+      }
+
+      .spell-input {
+        width: 130px;
+        font-size: 0.72rem;
+      }
+    }
+
+    /* Feather path along viewport edges */
+    .peacock-feather {
+      position: fixed;
+      width: 72px;
+      max-width: 18vw;
+      pointer-events: none;
+      z-index: 40;
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+      transition: opacity 500ms ease-out;
+    }
+
+    .peacock-feather[data-active="true"] {
+      opacity: 1;
+    }
+
+    .peacock-feather.hidden {
+      opacity: 0;
+    }
+
     :root {
       --bg-main: #0b1120;
       --bg-surface: #0f172a;
@@ -854,7 +926,7 @@
             <div class="hero-portrait-bg"></div>
             <div class="hero-portrait-card">
               <div class="hero-portrait-inner">
-                <img src="ppic.jpg" alt="Bennuri Charan Teja">
+                <img src="../Pictures/ppic.jpg" alt="Bennuri Charan Teja">
               </div>
               <div class="hero-portrait-tag">
                 <span class="hero-portrait-dot"></span>
@@ -1013,7 +1085,7 @@
             <!-- Project 1 -->
             <article class="project-card">
               <div class="project-thumb">
-                <img src="img1.png" alt="NutriConnect – Smart Nutrition">
+                <img src="img1.jpg" alt="NutriConnect – Smart Nutrition">
               </div>
               <div class="project-body">
                 <h3 class="project-title">NutriConnect – Smart Nutrition Tracking App</h3>
@@ -1032,7 +1104,7 @@
             <!-- Project 2 -->
             <article class="project-card">
               <div class="project-thumb">
-                <img src="img2.png" alt="Sports Registration System – Java Swing">
+                <img src="img2.jpg" alt="Sports Registration System – Java Swing">
               </div>
               <div class="project-body">
                 <h3 class="project-title">Sports Registration System – Java Swing</h3>
@@ -1051,7 +1123,7 @@
             <!-- Project 3 -->
             <article class="project-card">
               <div class="project-thumb">
-                <img src="img3.png" alt="ESP32-CAM Live Streaming Robot">
+                <img src="img3.jpg" alt="ESP32-CAM Live Streaming Robot">
               </div>
               <div class="project-body">
                 <h3 class="project-title">ESP32-CAM Live Streaming Robot</h3>
@@ -1071,7 +1143,7 @@
             <!-- Project 4 -->
             <article class="project-card">
               <div class="project-thumb">
-                <img src="img4.png" alt="GSM-Based Remote Water Pump Controller">
+                <img src="img4.jpg" alt="GSM-Based Remote Water Pump Controller">
               </div>
               <div class="project-body">
                 <h3 class="project-title">GSM-Based Remote Water Pump Controller</h3>
@@ -1269,5 +1341,152 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
+    <!-- Magical Easter Egg: Spell Input & Feather -->
+  <div class="spell-input-wrapper" aria-hidden="true">
+    <input
+      type="text"
+      class="spell-input"
+      placeholder="Type..Wingardi..."
+      autocomplete="off"
+    />
+  </div>
+
+  <img
+    src="peacock-feather.png"
+    alt="Peacock feather"
+    class="peacock-feather hidden"
+  >
+
+  <script>
+    (function () {
+      const SPELL = "wingardium leviosa";
+      const spellInput = document.querySelector(".spell-input");
+      const feather = document.querySelector(".peacock-feather");
+      let isAnimating = false;
+
+      if (!spellInput || !feather) return;
+
+      function smoothScrollTo(targetY, duration) {
+        const startY = window.scrollY || window.pageYOffset;
+        const distance = targetY - startY;
+        const startTime = performance.now();
+
+        return new Promise((resolve) => {
+          function step(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = progress < 0.5
+              ? 2 * progress * progress
+              : -1 + (4 - 2 * progress) * progress;
+
+            window.scrollTo(0, startY + distance * eased);
+
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              resolve();
+            }
+          }
+          requestAnimationFrame(step);
+        });
+      }
+
+      async function runMagicSequence() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const docHeight = Math.max(
+          document.body.scrollHeight,
+          document.documentElement.scrollHeight
+        );
+        const viewportHeight =
+          window.innerHeight || document.documentElement.clientHeight;
+        const maxScroll = Math.max(docHeight - viewportHeight, 0);
+
+        const totalDuration = 40000; // ms
+        const half = totalDuration / 2;
+
+        // Feather path around viewport edges
+        const startTime = performance.now();
+
+        function animateFeather(now) {
+          const elapsed = now - startTime;
+          let t = elapsed / totalDuration;
+          if (t > 1) t = 1;
+
+          const vw = window.innerWidth || document.documentElement.clientWidth;
+          const vh = window.innerHeight || document.documentElement.clientHeight;
+
+          const perimeter = 2 * (vw + vh);
+          const distance = perimeter * t;
+
+          let x = 0;
+          let y = 0;
+          let d = distance;
+
+          if (d <= vw) {
+            // Top edge: left -> right
+            x = d;
+            y = 0;
+          } else if (d <= vw + vh) {
+            // Right edge: top -> bottom
+            x = vw;
+            y = d - vw;
+          } else if (d <= vw + vh + vw) {
+            // Bottom edge: right -> left
+            x = vw - (d - (vw + vh));
+            y = vh;
+          } else {
+            // Left edge: bottom -> top
+            x = 0;
+            y = vh - (d - (vw + vh + vw));
+          }
+
+          const margin = 60;
+          x = Math.min(Math.max(x, margin), vw - margin);
+          y = Math.min(Math.max(y, margin), vh - margin);
+
+          feather.style.left = x + "px";
+          feather.style.top = y + "px";
+
+          if (t < 1) {
+            requestAnimationFrame(animateFeather);
+          }
+        }
+
+        feather.classList.remove("hidden");
+        feather.setAttribute("data-active", "true");
+
+        const scrollPromise = (async () => {
+          await smoothScrollTo(maxScroll, half);
+          await smoothScrollTo(0, half);
+        })();
+
+        requestAnimationFrame(animateFeather);
+
+        await Promise.all([
+          scrollPromise,
+          new Promise((r) => setTimeout(r, totalDuration))
+        ]);
+
+        feather.classList.add("hidden");
+        feather.removeAttribute("data-active");
+        isAnimating = false;
+      }
+
+      spellInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const value = spellInput.value.trim().toLowerCase();
+          if (value === SPELL) {
+            spellInput.blur();
+            runMagicSequence();
+          }
+          spellInput.value = "";
+        }
+      });
+    })();
+  </script>
+
+
 </body>
 </html>
