@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bennuri Charan Teja | Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Magical Easter Egg: Spell Input & Feather */
+    .spell-input-wrapper {
+      position: fixed;
+      top: 0.75rem;
+      right: 1rem;
+      z-index: 60;
+      pointer-events: none;
+    }
+
+    .spell-input {
+      pointer-events: auto;
+      width: 160px;
+      max-width: 45vw;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      background: rgba(15, 23, 42, 0.92);
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      font-family: var(--font-body);
+      outline: none;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65);
+      transition: border-color 160ms ease-out, box-shadow 160ms ease-out,
+        background 160ms ease-out, transform 160ms ease-out;
+      opacity: 0.92;
+    }
+
+    .spell-input::placeholder {
+      color: rgba(249, 250, 251, 0.55);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .spell-input:focus {
+      border-color: rgba(251, 191, 36, 0.85);
+      background: rgba(15, 23, 42, 0.98);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.85);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 720px) {
+      .spell-input-wrapper {
+        top: 0.6rem;
+        right: 0.8rem;
+      }
+
+      .spell-input {
+        width: 130px;
+        font-size: 0.72rem;
+      }
+    }
+
+    /* Feather path along viewport edges */
+    .peacock-feather {
+      position: fixed;
+      width: 72px;
+      max-width: 18vw;
+      pointer-events: none;
+      z-index: 40;
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+      transition: opacity 500ms ease-out;
+    }
+
+    .peacock-feather[data-active="true"] {
+      opacity: 1;
+    }
+
+    .peacock-feather.hidden {
+      opacity: 0;
+    }
+
+    :root {
+      --bg-main: #0b1120;
+      --bg-surface: #0f172a;
+      --text-primary: #f9fafb;
+      --text-muted: #9ca3af;
+      --accent: #fbbf24;
+      --border-soft: #1f2937;
+      --font-heading: "Playfair Display", serif;
+      --font-body: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --radius-card: 16px;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+      --transition-base: 200ms ease-out;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: radial-gradient(circle at top left, #1e293b 0, #020617 40%, #000 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .page {
+      min-height: 100vh;
+      color: var(--text-primary);
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navbar */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.65), transparent);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .nav-brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 250, 252, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.15);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      position: relative;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.3rem;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), #fde68a);
+      transition: width var(--transition-base);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: none;
+    }
+
+    /* Hero */
+
+    .hero {
+      padding: 5.5rem 0 4.5rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.3fr);
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-kicker {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: clamp(2.4rem, 4vw, 3.1rem);
+      line-height: 1.2;
+      margin-bottom: 0.7rem;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-tagline {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 32rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-summary {
+      font-size: 0.98rem;
+      color: #e5e7eb;
+      max-width: 36rem;
+      margin-bottom: 2.3rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 0.7rem 1.6rem;
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base), border-color var(--transition-base), color var(--transition-base);
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at top left, #fbbf24, #f59e0b);
+      color: #020617;
+      box-shadow: 0 18px 35px rgba(251, 191, 36, 0.35);
+      border-color: rgba(253, 224, 71, 0.8);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 22px 45px rgba(251, 191, 36, 0.45);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(251, 191, 36, 0.9);
+      color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.75);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .hero-meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-meta-label {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      color: #64748b;
+      margin-bottom: 0.25rem;
+    }
+
+    .hero-meta-value {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-portrait-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-portrait-bg {
+      position: absolute;
+      inset: 10%;
+      border-radius: 999px;
+      background: conic-gradient(from 160deg, rgba(251, 191, 36, 0.1), transparent, rgba(56, 189, 248, 0.1), transparent, rgba(251, 191, 36, 0.2));
+      filter: blur(28px);
+      opacity: 0.9;
+    }
+
+    .hero-portrait-card {
+      position: relative;
+      border-radius: 999px;
+      padding: 0.3rem;
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.8));
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      max-width: 260px;
+      width: 100%;
+    }
+
+    .hero-portrait-inner {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .hero-portrait-inner img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-portrait-tag {
+      position: absolute;
+      right: -1.4rem;
+      bottom: 1.4rem;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 999px;
+      padding: 0.4rem 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      backdrop-filter: blur(14px);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .hero-portrait-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle, #22c55e, #166534);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    /* Sections */
+
+    section {
+      padding: 4.5rem 0;
+      border-top: 1px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    .section-subtitle {
+      max-width: 28rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 0.25rem 0.85rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #9ca3af;
+    }
+
+    /* About */
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.5fr) minmax(0, 2fr);
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text {
+      font-size: 0.98rem;
+      color: #e5e7eb;
+      display: grid;
+      gap: 1.1rem;
+    }
+
+    .about-highlight {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .about-meta {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .about-meta-item {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+      border-radius: var(--radius-card);
+      padding: 1rem 1.2rem;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .about-meta-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #9ca3af;
+      margin-bottom: 0.35rem;
+    }
+
+    .about-meta-value {
+      font-size: 0.93rem;
+    }
+
+    .fun-facts {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-top: 1px dashed rgba(55, 65, 81, 0.8);
+      padding-top: 0.9rem;
+      margin-top: 0.4rem;
+    }
+
+    /* SKILLS – 3D cube layout + fallback */
+
+    .skills-cube-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .skills-cube-shell {
+      position: relative;
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: radial-gradient(circle at top left,
+        rgba(15, 23, 42, 0.95),
+        rgba(15, 23, 42, 0.88));
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+      overflow: hidden;
+      padding: 0.75rem;
+      
+    }
+
+    #skills-cube-root {
+      width: 100%;
+      height: min(420px, 70vh);
+      border-radius: 20px;
+      background: radial-gradient(circle at top left,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.94));
+      backdrop-filter: blur(22px);
+    }
+
+    #skills-cube-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 20px;
+    }
+    
+
+    .skills-cube-face-title {
+      position: absolute;
+      top: 0.9rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 250, 252, 0.18);
+      background: linear-gradient(
+        120deg,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.92)
+      );
+      backdrop-filter: blur(14px);
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
+      text-align: center;
+    }
+
+    .skills-cube-hint {
+      position: absolute;
+      bottom: 0.9rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(148, 163, 184, 0.88);
+      text-align: center;
+    }
+
+    .skills-cube-detail {
+      border-radius: 18px;
+      padding: 1.3rem 1.5rem;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      background: radial-gradient(circle at top left,
+        rgba(15, 23, 42, 0.98),
+        rgba(15, 23, 42, 0.92));
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+      font-size: 0.92rem;
+      color: #e5e7eb;
+    }
+
+    .skills-cube-detail-title {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.5rem;
+    }
+
+    .skills-cube-detail-body {
+      color: var(--text-muted);
+    }
+
+    .skills-fallback {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-card {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+      border-radius: var(--radius-card);
+      padding: 1.25rem 1.3rem 1.35rem;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.85);
+      display: grid;
+      gap: 0.75rem;
+      transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+    }
+
+    .skill-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
+      border-color: rgba(251, 191, 36, 0.35);
+    }
+
+    .skill-title {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #e5e7eb;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      border-radius: 999px;
+      padding: 0.15rem 0.6rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.96));
+    }
+
+    /* Projects */
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.75rem;
+    }
+
+    .project-card {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92));
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.9);
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.9);
+      border-color: rgba(251, 191, 36, 0.35);
+    }
+
+    .project-thumb {
+      height: 150px;
+      overflow: hidden;
+      padding: 0;
+      background: none;
+    }
+
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-body {
+      padding: 1.2rem 1.35rem 1.3rem;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .project-title {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .project-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .project-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.2rem;
+    }
+
+    .project-key {
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    /* Experience & education */
+
+    .timeline {
+      border-left: 1px solid rgba(55, 65, 81, 0.9);
+      margin-left: 0.7rem;
+      padding-left: 1.5rem;
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0.8rem 1rem;
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.93));
+      border-radius: var(--radius-card);
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.9);
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -1.85rem;
+      top: 1.2rem;
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      border: 2px solid rgba(248, 250, 252, 0.9);
+      background: radial-gradient(circle, var(--accent), #f97316);
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.7);
+    }
+
+    .timeline-role {
+      font-size: 0.98rem;
+      font-weight: 500;
+    }
+
+    .timeline-org {
+      font-size: 0.9rem;
+      color: #e5e7eb;
+    }
+
+    .timeline-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.6rem;
+    }
+
+    /* Certificates */
+
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .cert-card {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      display: grid;
+      gap: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    .cert-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .cert-title {
+      font-weight: 500;
+    }
+
+    .cert-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Contact */
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 2fr);
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .contact-form {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.9));
+      border-radius: var(--radius-card);
+      padding: 1.6rem 1.5rem 1.5rem;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    .field-group {
+      display: grid;
+      gap: 0.35rem;
+      margin-bottom: 0.9rem;
+    }
+
+    label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    input,
+    textarea {
+      background: #020617;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 0.65rem 0.9rem;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
+    }
+
+    textarea {
+      border-radius: 1rem;
+      min-height: 140px;
+      resize: vertical;
+      padding-top: 0.7rem;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(251, 191, 36, 0.9);
+      box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.45);
+      background: #020617;
+    }
+
+    .contact-details {
+      display: grid;
+      gap: 1rem;
+      font-size: 0.92rem;
+    }
+
+    .contact-item-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+
+    .contact-link {
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .contact-link span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+
+    footer {
+      padding: 2.5rem 0 2rem;
+      border-top: 1px solid rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .about-grid,
+      .project-grid,
+      .cert-grid,
+      .contact-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .skills-cube-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero {
+        padding-top: 4.2rem;
+      }
+
+      .hero-portrait-wrap {
+        order: -1;
+      }
+
+      .project-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .cert-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      #skills-cube-root {
+        height: 340px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-cta {
+        display: inline-flex;
+      }
+
+      section {
+        padding: 3.4rem 0;
+      }
+
+      .project-grid,
+      .cert-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .skills-fallback {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Navbar -->
+    <header>
+      <div class="container">
+        <nav class="nav">
+          <div class="nav-brand">
+            <div class="nav-brand-mark">BT</div>
+            <span>Bennuri Charan Teja</span>
+          </div>
+          <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#education">Education</a>
+            <a href="#certifications">Certificates</a>
+            <a href="#contact">Contact</a>
+          </div>
+          <a href="resumecs.pdf" class="btn btn-outline nav-cta" target="_blank" rel="noopener">Resume</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <main>
+      <section class="hero" id="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="hero-kicker">ECE Student</div>
+            <h1 class="hero-title">
+              Bennuri <span>Charan Teja</span>
+            </h1>
+            <p class="hero-tagline">
+              Building intelligent, scalable systems at the intersection of software, AI/ML, and embedded electronics.
+            </p>
+            <p class="hero-summary">
+              Electronics and communication engineering student with hands-on experience in Java, Python, full-stack concepts, AI/ML pipelines, IoT automation, and embedded integrations. Passionate about turning complex ideas into reliable, production-ready solutions.
+            </p>
+            <div class="hero-actions">
+              <a href="resumecs.pdf" class="btn btn-primary" target="_blank" rel="noopener">Download Resume</a>
+              <a href="#projects" class="btn btn-outline">View Projects</a>
+              <a href="#contact" class="btn btn-outline">Contact</a>
+            </div>
+            <div class="hero-meta">
+              <div class="hero-meta-item">
+                <span class="hero-meta-label">Location</span>
+                <span class="hero-meta-value">Hyderabad, Telangana</span>
+              </div>
+              <div class="hero-meta-item">
+                <span class="hero-meta-label">Current Program</span>
+                <span class="hero-meta-value">B.Tech – ECE, KL University</span>
+              </div>
+              <div class="hero-meta-item">
+                <span class="hero-meta-label">CGPA</span>
+                <span class="hero-meta-value">9.63 (2023–Present)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-portrait-wrap">
+            <div class="hero-portrait-bg"></div>
+            <div class="hero-portrait-card">
+              <div class="hero-portrait-inner">
+                <img src="ppic.jpg" alt="Bennuri Charan Teja">
+              </div>
+              <div class="hero-portrait-tag">
+                <span class="hero-portrait-dot"></span>
+                <span>Open to opportunities</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">About Me</h2>
+            <p class="section-subtitle">
+              An ECE student combining strong fundamentals in electronics with practical experience in AI/ML, IoT, and application development.
+            </p>
+          </div>
+          <div class="about-grid">
+            <div class="about-text">
+              <p>
+                As a <span class="about-highlight">B.Tech Electronics &amp; Communication Engineering student at KL University</span>, the focus is on building solutions that blend clean architecture with real-world impact. From AI-powered agriculture systems to IoT-based automation, every project is an opportunity to design systems that are both intelligent and dependable.
+              </p>
+              <p>
+                Skilled in <span class="about-highlight">Java, Python, C, and full-stack concepts</span>, alongside experience in AI/ML workflows, embedded controllers, and communication systems, there is a consistent emphasis on scalability, robustness, and thoughtful user experience. Whether it is a Java Swing desktop application or AI Integration for Agriculture, attention to detail and end-to-end thinking remain constant.
+              </p>
+              <p>
+                Collaboration, clarity, and continuous learning define the working style. Enjoy breaking complex problems into structured milestones, communicating decisions clearly with teammates, and iterating quickly based on feedback, all while keeping long-term maintainability in mind.
+              </p>
+            </div>
+
+            <div class="about-meta">
+              <div class="about-meta-item">
+                <div class="about-meta-label">Contact</div>
+                <div class="about-meta-value">
+                  <div>Email: <a href="mailto:bennuricharanteja@gmail.com">bennuricharanteja@gmail.com</a></div>
+                  <div>Phone: <a href="tel:+917842210029">+91 78422 10029</a></div>
+                </div>
+              </div>
+              <div class="about-meta-item">
+                <div class="about-meta-label">Profiles</div>
+                <div class="about-meta-value">
+                  <div><a href="https://linkedin.com/in/bennuri-charan-teja-b00b89328" target="_blank" rel="noopener">LinkedIn</a></div>
+                  <div><a href="https://github.com/CharanTeja-27" target="_blank" rel="noopener">GitHub</a></div>
+                </div>
+              </div>
+              <div class="about-meta-item">
+                <div class="about-meta-label">Hobbies</div>
+                <div class="about-meta-value">
+                  Enjoy playing chess and badminton, and listening to music as ways to reset, reflect, and return to projects with a sharper mindset.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills with 3D cube -->
+      <section id="skills">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Skills</h2>
+            <p class="section-subtitle">
+              A 3D “Skills Cube” that groups technical, embedded, AI/ML, tools, and soft skills into one immersive view, with a clean fallback list for accessibility.
+            </p>
+          </div>
+
+          <div class="skills-cube-layout">
+          <div class="skills-cube-shell">
+  <div id="skills-cube-root" aria-label="3D skills cube visualization">
+    <canvas id="skills-cube-canvas"></canvas>
+  </div>
+
+  <div class="skills-cube-face-title" id="skills-cube-face-title">
+    Technical Skills
+  </div>
+
+  <div class="skills-cube-hint">
+    Drag to rotate the cube. 
+  </div>
+
+  <button id="cube-rotate-toggle" style="
+    position:absolute;
+    right:1rem;
+    bottom:1rem;
+    padding:4px 10px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,0.7);
+    background:rgba(15,23,42,0.9);
+    color:#e5e7eb;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    cursor:pointer;
+  ">
+  Spin/Stop
+  </button>
+</div>
+
+
+            <aside class="skills-cube-detail" id="skills-cube-detail">
+              <h3 class="skills-cube-detail-title">Skill details</h3>
+              <p class="skills-cube-detail-body">
+                Hover or tap on the cube to explore different skill categories. 
+              </p>
+            </aside>
+          </div>
+
+          <!-- SEO / accessibility fallback list -->
+          <div class="skills-fallback" aria-label="Skills list (fallback for non‑3D)">
+            <div class="skill-card">
+              <div class="skill-title">Technical Skills</div>
+              <div class="skill-tags">
+                <span class="tag">C</span>
+                <span class="tag">Java</span>
+                <span class="tag">Python</span>
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">DSA</span>
+                <span class="tag">OOP</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-title">Platforms &amp; Tools</div>
+              <div class="skill-tags">
+                <span class="tag">Arduino IDE</span>
+                <span class="tag">EasyEDA</span>
+                <span class="tag">Proteus</span>
+                <span class="tag">TinkerCAD</span>
+                <span class="tag">Figma</span>
+                <span class="tag">MATLAB</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-title">Embedded &amp; Hardware</div>
+              <div class="skill-tags">
+                <span class="tag">Arduino</span>
+                <span class="tag">STM32</span>
+                <span class="tag">8051</span>
+                <span class="tag">ESP32</span>
+                <span class="tag">ESP8266</span>
+                <span class="tag">PMOS / NMOS / CMOS</span>
+                <span class="tag">PCB Design</span>
+                <span class="tag">Microcontrollers</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-title">AI / ML &amp; Systems</div>
+              <div class="skill-tags">
+                <span class="tag">AI Pipelines</span>
+                <span class="tag">Computer Vision Datasets</span>
+                <span class="tag">Simulation &amp; Modeling</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-title">Soft Skills</div>
+              <div class="skill-tags">
+                <span class="tag">Communication</span>
+                <span class="tag">Teamwork</span>
+                <span class="tag">Adaptability</span>
+                <span class="tag">Critical Thinking</span>
+                <span class="tag">Time Management</span>
+                <span class="tag">Leadership</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-title">Domains of Interest</div>
+              <div class="skill-tags">
+                <span class="tag">Full-Stack Concepts</span>
+                <span class="tag">IoT Automation</span>
+                <span class="tag">Embedded–Software Integration</span>
+                <span class="tag">Communication Systems</span>
+                <span class="tag">Simulation &amp; Prototyping</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Projects</h2>
+            <p class="section-subtitle">
+              A selection of software, AI/ML, and embedded projects that demonstrate the ability to design, prototype, and refine end-to-end solutions.
+            </p>
+            <div class="pill">Case Studies</div>
+          </div>
+
+          <div class="project-grid">
+            <!-- Project 1 -->
+            <article class="project-card">
+              <div class="project-thumb">
+                <img src="img1.png" alt="NutriConnect – Smart Nutrition">
+              </div>
+              <div class="project-body">
+                <h3 class="project-title">NutriConnect – Smart Nutrition Tracking App</h3>
+                <p class="project-description">
+                  A Figma-designed nutrition tracking system that maps user workflows, input journeys, and data processing pipelines for personalized nutrition insights.
+                </p>
+                <div class="project-meta">
+                  <span class="tag">Figma</span>
+                  <span class="tag">UX Flow</span>
+                  <span class="tag">Data Modeling</span>
+                </div>
+                <div class="project-key">Focus: User-centric design, structured data handling.</div>
+              </div>
+            </article>
+
+            <!-- Project 2 -->
+            <article class="project-card">
+              <div class="project-thumb">
+                <img src="img2.png" alt="Sports Registration System – Java Swing">
+              </div>
+              <div class="project-body">
+                <h3 class="project-title">Sports Registration System – Java Swing</h3>
+                <p class="project-description">
+                  Desktop application built with Java Swing to handle event registrations, participant tracking, and structured event data management for sports events.
+                </p>
+                <div class="project-meta">
+                  <span class="tag">Java</span>
+                  <span class="tag">Swing UI</span>
+                  <span class="tag">Desktop App</span>
+                </div>
+                <div class="project-key">Focus: Data organization, form flows, desktop UX.</div>
+              </div>
+            </article>
+
+            <!-- Project 3 -->
+            <article class="project-card">
+              <div class="project-thumb">
+                <img src="img3.png" alt="ESP32-CAM Live Streaming Robot">
+              </div>
+              <div class="project-body">
+                <h3 class="project-title">ESP32-CAM Live Streaming Robot</h3>
+                <p class="project-description">
+                  A real-time surveillance robot built using an ESP32-CAM module, capable of wireless video streaming and remote motion control. Designed for low-cost monitoring, IoT experimentation, and mobile robotics applications.
+                </p>
+                <div class="project-meta">
+                  <span class="tag">ESP32-CAM</span>
+                  <span class="tag">IoT</span>
+                  <span class="tag">Robotics</span>
+                  <span class="tag">Live Streaming</span>
+                </div>
+                <div class="project-key">Focus: Real-time video transmission, wireless control, embedded systems.</div>
+              </div>
+            </article>
+
+            <!-- Project 4 -->
+            <article class="project-card">
+              <div class="project-thumb">
+                <img src="img4.png" alt="GSM-Based Remote Water Pump Controller">
+              </div>
+              <div class="project-body">
+                <h3 class="project-title">GSM-Based Remote Water Pump Controller</h3>
+                <p class="project-description">
+                  SMS-controlled IoT system using ESP32 and SIM800 modules to remotely operate water pumps, enabling automation in water management.
+                </p>
+                <div class="project-meta">
+                  <span class="tag">ESP32</span>
+                  <span class="tag">SIM800</span>
+                  <span class="tag">IoT</span>
+                  <span class="tag">GSM</span>
+                </div>
+                <div class="project-key">Focus: Remote control, embedded–software integration.</div>
+              </div>
+            </article>
+
+            <!-- Project 5 -->
+            <article class="project-card">
+              <div class="project-thumb">
+                <img src="img5.jpg" alt="End-to-End AI Integration for Indian Agriculture">
+              </div>
+              <div class="project-body">
+                <h3 class="project-title">End-to-End AI Integration for Indian Agriculture</h3>
+                <p class="project-description">
+                  AI pipeline combining crop monitoring, yield prediction, and price forecasting to support better decision-making in Indian agricultural ecosystems.
+                </p>
+                <div class="project-meta">
+                  <span class="tag">AI/ML</span>
+                  <span class="tag">Data Pipeline</span>
+                  <span class="tag">Agritech</span>
+                </div>
+                <div class="project-key">Focus: End-to-end ML workflows and practical impact.</div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience -->
+      <section id="experience">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Experience</h2>
+            <p class="section-subtitle">
+              Academic and project-based experience that reflects ownership, experimentation, and a focus on building practical, high-impact systems.
+            </p>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-role">ECE Student</div>
+              <div class="timeline-org">KL University</div>
+              <div class="timeline-meta">2023 – Present · Hyderabad (Remote &amp; On-Campus)</div>
+              <p class="timeline-desc">
+                Working across software development, communication systems, and embedded designs through structured coursework and projects. Responsibilities include designing simulations, implementing AI models, building IoT prototypes, and collaborating on project documentation and presentations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section id="education">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Education</h2>
+            <p class="section-subtitle">
+              Strong academic performance with a deep focus on electronics, communication, and software-centric engineering.
+            </p>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-role">B.Tech – Electronics &amp; Communication Engineering</div>
+              <div class="timeline-org">KL University</div>
+              <div class="timeline-meta">2023 – Present · CGPA: 9.63</div>
+              <p class="timeline-desc">
+                Building a foundation in communication systems, embedded electronics, and software engineering, complemented by hands-on work in AI/ML, IoT, and simulation-based research.
+              </p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-role">Intermediate – MPC</div>
+              <div class="timeline-org">Narayana Junior College</div>
+              <div class="timeline-meta">Completed in 2023 · 98%</div>
+              <p class="timeline-desc">
+                Completed MPC with a strong grounding in mathematics and physics, laying the analytical base for engineering studies.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Certificates -->
+      <section id="certifications">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Certificates &amp; Achievements</h2>
+            <p class="section-subtitle">
+              Industry-recognized certifications that complement technical skills and validate readiness for real-world engineering challenges.
+            </p>
+          </div>
+
+          <div class="cert-grid">
+            <div class="cert-card">
+              <div class="cert-tag">Cloud</div>
+              <div class="cert-title">AWS Cloud Practitioner</div>
+              <div class="cert-meta">2025</div>
+            </div>
+
+            <div class="cert-card">
+              <div class="cert-tag">Databases</div>
+              <div class="cert-title">MongoDB Associate Developer</div>
+              <div class="cert-meta">2024</div>
+            </div>
+
+            <div class="cert-card">
+              <div class="cert-tag">Automation</div>
+              <div class="cert-title">Automation Anywhere Advanced RPA Professional</div>
+              <div class="cert-meta">2025</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Contact</h2>
+            <p class="section-subtitle">
+              Open to internships, collaborative projects, and research-driven opportunities in software, AI/ML, and embedded systems.
+            </p>
+          </div>
+   <!--          <div class="contact-grid">
+            <form class="contact-form">
+              <div class="field-group">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your name" />
+              </div>
+              <div class="field-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" />
+              </div>
+              <div class="field-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Share a brief about the opportunity or collaboration."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Send Message</button>
+            </form> -->
+
+            <div class="contact-details">
+              <div>
+                <div class="contact-item-label">Email</div>
+                <a class="contact-link" href="mailto:bennuricharanteja@gmail.com">
+                  bennuricharanteja@gmail.com
+                </a>
+              </div>
+              <div>
+                <div class="contact-item-label">Phone</div>
+                <a class="contact-link" href="tel:+917842210029">
+                  +91 78422 10029
+                </a>
+              </div>
+              <div>
+                <div class="contact-item-label">LinkedIn</div>
+                <a class="contact-link" href="https://linkedin.com/in/bennuri-charan-teja-b00b89328" target="_blank" rel="noopener">
+                  linkedin.com/in/bennuri-charan-teja-b00b89328
+                </a>
+              </div>
+              <div>
+                <div class="contact-item-label">GitHub</div>
+                <a class="contact-link" href="https://github.com/CharanTeja-27" target="_blank" rel="noopener">
+                  https://github.com/CharanTeja-27<span></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-inner">
+        <div>© <span id="year"></span> Bennuri Charan Teja. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#hero">Back to top</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Magical Easter Egg: Spell Input & Feather -->
+
+  <img
+    src="peacock-feather.png"
+    alt="Peacock feather"
+    class="peacock-feather hidden"
+  >
+
+  <script>
+    (function () {
+      const SPELL = "wingardium leviosa";
+      const spellInput = document.querySelector(".spell-input");
+      const feather = document.querySelector(".peacock-feather");
+      let isAnimating = false;
+
+      if (!spellInput || !feather) return;
+
+      function smoothScrollTo(targetY, duration) {
+        const startY = window.scrollY || window.pageYOffset;
+        const distance = targetY - startY;
+        const startTime = performance.now();
+
+        return new Promise((resolve) => {
+          function step(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = progress < 0.5
+              ? 2 * progress * progress
+              : -1 + (4 - 2 * progress) * progress;
+
+            window.scrollTo(0, startY + distance * eased);
+
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              resolve();
+            }
+          }
+          requestAnimationFrame(step);
+        });
+      }
+
+      async function runMagicSequence() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const docHeight = Math.max(
+          document.body.scrollHeight,
+          document.documentElement.scrollHeight
+        );
+        const viewportHeight =
+          window.innerHeight || document.documentElement.clientHeight;
+        const maxScroll = Math.max(docHeight - viewportHeight, 0);
+
+        const totalDuration = 40000;
+        const half = totalDuration / 2;
+
+        const startTime = performance.now();
+
+        function animateFeather(now) {
+          const elapsed = now - startTime;
+          let t = elapsed / totalDuration;
+          if (t > 1) t = 1;
+
+          const vw = window.innerWidth || document.documentElement.clientWidth;
+          const vh = window.innerHeight || document.documentElement.clientHeight;
+
+          const perimeter = 2 * (vw + vh);
+          const distance = perimeter * t;
+
+          let x = 0;
+          let y = 0;
+          let d = distance;
+
+          if (d <= vw) {
+            x = d;
+            y = 0;
+          } else if (d <= vw + vh) {
+            x = vw;
+            y = d - vw;
+          } else if (d <= vw + vh + vw) {
+            x = vw - (d - (vw + vh));
+            y = vh;
+          } else {
+            x = 0;
+            y = vh - (d - (vw + vh + vw));
+          }
+
+          const margin = 60;
+          x = Math.min(Math.max(x, margin), vw - margin);
+          y = Math.min(Math.max(y, margin), vh - margin);
+
+          feather.style.left = x + "px";
+          feather.style.top = y + "px";
+
+          if (t < 1) {
+            requestAnimationFrame(animateFeather);
+          }
+        }
+
+        feather.classList.remove("hidden");
+        feather.setAttribute("data-active", "true");
+
+        const scrollPromise = (async () => {
+          await smoothScrollTo(maxScroll, half);
+          await smoothScrollTo(0, half);
+        })();
+
+        requestAnimationFrame(animateFeather);
+
+        await Promise.all([
+          scrollPromise,
+          new Promise((r) => setTimeout(r, totalDuration))
+        ]);
+
+        feather.classList.add("hidden");
+        feather.removeAttribute("data-active");
+        isAnimating = false;
+      }
+
+      spellInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const value = spellInput.value.trim().toLowerCase();
+          if (value === SPELL) {
+            spellInput.blur();
+            runMagicSequence();
+          }
+          spellInput.value = "";
+        }
+      });
+    })();
+  </script>
+<div id="skills-tooltip" style="
+  position: fixed;
+  z-index: 80;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(15,23,42,0.96);
+  color: #e5e7eb;
+  border: 1px solid rgba(148,163,184,0.7);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.8);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -130%);
+  transition: opacity 120ms ease-out;
+"></div>
+
+  <!-- Three.js rotating cube for Skills section (custom drag controls) -->
+  <!-- Three.js rotating Skills Cube with 3x3 cubies on front face -->
+<!-- Three.js 3×3×3 Skills Cube – fixed categories + premium materials -->
+<script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+<script>
+  (function () {
+    if (!window.THREE) {
+      console.warn("THREE.js failed to load");
+      return;
+    }
+
+       var container = document.getElementById("skills-cube-root");
+    var canvas = document.getElementById("skills-cube-canvas");
+    var titleEl = document.getElementById("skills-cube-face-title");
+    var tooltipEl = document.getElementById("skills-tooltip");
+    var toggleBtn = document.getElementById("cube-rotate-toggle");
+
+       if (!container || !canvas || !titleEl || !tooltipEl || !toggleBtn) {
+
+      console.warn("Skills cube elements not found");
+      return;
+    }
+
+    var renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      antialias: true,
+      alpha: true
+    });
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setClearColor(0x020617, 0);
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+    camera.position.set(4.2, 3.6, 6.5);
+    camera.lookAt(0, 0, 0);
+
+    scene.add(new THREE.AmbientLight(0x111827, 0.9));
+
+    var keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
+    keyLight.position.set(6, 8, 10);
+    scene.add(keyLight);
+
+    var fillLight = new THREE.DirectionalLight(0x93c5fd, 0.4);
+    fillLight.position.set(-4, 3, -6);
+    scene.add(fillLight);
+
+    var rimLight = new THREE.PointLight(0x1d4ed8, 0.8, 30);
+    rimLight.position.set(-5, -3, -8);
+    scene.add(rimLight);
+
+   var categoryColors = {
+  front: 0x00C2FF,   // Neon Sky Blue
+  back: 0xFF3CAC,    // Electric Pink
+  left: 0x00F5A0,    // Bright Mint Green
+  right: 0x8B5CF6,   // Vivid Purple
+  top: 0xFF8C00,     // Bright Orange
+  bottom: 0xFFD60A   // Golden Yellow
+};
+
+    var skillsByFace = {
+      back: [
+        { short: "C",      full: "C Programming",                          project: "Sports Registration logic, ESP32 robot firmware" },
+        { short: "JAVA",   full: "Java Programming",                       project: "Sports Registration System – Java Swing" },
+        { short: "PYTHON", full: "Python Programming",                     project: "AI Integration for Indian Agriculture" },
+        { short: "HTML",   full: "HTML & Semantic Markup",                 project: "Portfolio, NutriConnect UI spec" },
+        { short: "",  full: "",                     project: "" },
+        { short: "CSS",    full: "CSS Layout & Styling",                   project: "Portfolio, NutriConnect UI spec" },
+        { short: "DSA",    full: "Data Structures & Algorithms",           project: "Course projects & problem‑solving practice" },
+        { short: "OOP",    full: "Object Oriented Programming",            project: "Java Swing app structure, class design" },
+        { short: "GIT",    full: "Git / Version Control",                  project: "All GitHub‑hosted projects" }
+      ],
+      front: [
+        { short: "MATLAB",   full: "MATLAB & Simulink",                    project: "Signal and system simulations" },
+        { short: "VS CODE",  full: "Visual Studio Code",                   project: "ESP32 robot & web experiments" },
+        { short: "ARDUINO",  full: "Arduino IDE",                          project: "IoT prototypes & MCU sketches" },
+        { short: "EASYEDA",  full: "EasyEDA PCB Design Tool",              project: "PCB layouts for embedded boards" },
+        { short: "",  full: "",                   project: "" },
+        { short: "PROTEUS",  full: "Proteus Simulation",                   project: "Circuit & MCU behavior simulation" },
+        { short: "TINKERCAD",full: "TinkerCAD Circuits",                   project: "Basic electronics & Arduino sims" },
+        { short: "FIGMA",    full: "Figma UI Design",                      project: "NutriConnect – Smart Nutrition app" },
+        { short: "MONGODB",  full: "MongoDB & Document DB Concepts",       project: "Certification labs & sample apps" }
+      ],
+      right: [
+        { short: "STM32",   full: "STM32 Microcontrollers",                project: "Embedded control prototypes" },
+        { short: "ESP32",   full: "ESP32 Wi‑Fi/BLE SoC",                   project: "ESP32‑CAM robot, GSM pump controller" },
+        { short: "8051",    full: "8051 Architecture & Programming",       project: "Course labs & simulations" },
+        { short: "ESP8266", full: "ESP8266 Wi‑Fi Module",                  project: "IoT connectivity experiments" },
+        { short: "PCB",     full: "PCB Design Fundamentals",               project: "Custom boards using EasyEDA" },
+        { short: "UART",    full: "UART Serial Communication",             project: "MCU‑to‑module interfacing" },
+        { short: "SPI",     full: "SPI Communication",                     project: "Sensor & peripheral interfacing" },
+        { short: "I2C",     full: "I²C Communication",                     project: "Multi‑sensor embedded projects" },
+        { short: "SENSORS", full: "Sensor Interfacing & Calibration",      project: "IoT and automation prototypes" }
+      ],
+      left: [
+        { short: "AI FLOW",  full: "AI Pipelines & Workflow Design",       project: "AI Integration for Indian Agriculture" },
+        { short: "ML",full: "Machine Learning Models",              project: "Yield & price prediction models" },
+        { short: "DATA P",full: "Data Cleaning & Preparation",          project: "Agriculture datasets & experiment logs" },
+        { short: "CV",       full: "Computer Vision Concepts",             project: "Image‑based crop monitoring" },
+        { short: "SIMULATE", full: "Simulation & Scenario Modeling",       project: "MATLAB and ML experiments" },
+        { short: "MOD VAL",full: "Model Evaluation & Metrics",           project: "Accuracy & confusion matrix analysis" },
+        //{ short: "",    full: "NumPy for Numerical Computing",        project: "Data processing and ML prep" },
+        //{ short: "PANDAS",   full: "Pandas for Tabular Data",              project: "Exploring agriculture datasets" },
+        { short: "METRICS",  full: "Performance Metrics & Analysis",       project: "Comparing ML model runs" },
+        { short: "",  full: "",                   project: "" },
+        { short: "",  full: "",                   project: "" }
+      ],
+      top: [
+        { short: "COMM",     full: "Communication & Presentation",         project: "Project demos and team reviews" },
+        { short: "LEADER",   full: "Leadership in Team Projects",          project: "Coordinating multi‑member builds" },
+        { short: "TEAMWORK", full: "Team Collaboration",                   project: "Group assignments & lab work" },
+        { short: "ADAPT",    full: "Adaptability to New Tech",             project: "Learning tools/libraries on demand" },
+        { short: "PROBLEM",  full: "Problem‑Solving Mindset",              project: "Debugging complex system issues" },
+        { short: "CREATIVE", full: "Creative Solution Design",             project: "Feature ideas & UX improvements" },
+        { short: "TIME",     full: "Time Management",                      project: "Balancing academics and projects" },
+        { short: "OWNERSHIP",full: "Ownership & Responsibility",           project: "Leading end‑to‑end implementations" },
+        { short: "LEARNING", full: "Continuous Learning",                  project: "Courses, certifications, self‑study" }
+      ],
+      bottom: [
+        { short: "IOT",      full: "IoT Automation Systems",               project: "ESP32‑CAM robot, GSM pump controller" },
+        { short: "EMB SW",   full: "Embedded Software Integration",        project: "MCU firmware + cloud/tooling" },
+        { short: "COMMSYS",  full: "Communication Systems",               project: "ECE coursework & simulations" },
+        { short: "NETWORKS", full: "Networking Fundamentals",              project: "Routing & connectivity concepts" },
+        { short: "SIGNAL",   full: "Signal Processing Basics",             project: "MATLAB filter & signal labs" },
+        { short: "VLSI",     full: "VLSI & Digital Design Basics",         project: "Course modules and mini‑projects" },
+        { short: "SIM",      full: "Simulation & Prototyping",             project: "Hardware‑in‑loop and modeling" },
+        { short: "PROTO",    full: "Rapid Prototyping",                    project: "Quick hardware/software iterations" },
+        { short: "SYSTEMS",  full: "Systems Thinking & Architecture",      project: "Designing end‑to‑end solutions" }
+      ]
+    };
+
+    var faceTitleMap = {
+      front: "Technical Skills",
+      back: "Platforms & Tools",
+      left: "Embedded & Hardware",
+      right: "AI / ML & Systems",
+      top: "Soft Skills",
+      bottom: "Domains of Interest"
+    };
+
+    function createSkillTexture(label, baseColor) {
+      var s = 256;
+      var c = document.createElement("canvas");
+      c.width = c.height = s;
+      var ctx = c.getContext("2d");
+
+      var base = new THREE.Color(baseColor);
+      var dark = base.clone().multiplyScalar(0.22);
+      var mid = base.clone().multiplyScalar(0.6);
+      var edge = base.clone().multiplyScalar(1.05);
+
+      var g = ctx.createRadialGradient(s * 0.3, s * 0.3, s * 0.1, s * 0.5, s * 0.5, s * 0.85);
+      g.addColorStop(0, "#" + mid.getHexString());
+      g.addColorStop(1, "#" + dark.getHexString());
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, s, s);
+
+      ctx.strokeStyle = "#" + edge.getHexString();
+      ctx.lineWidth = 8;
+      ctx.strokeRect(10, 10, s - 20, s - 20);
+
+      ctx.strokeStyle = "rgba(15,23,42,0.9)";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(18, 18, s - 36, s - 36);
+
+      ctx.fillStyle = "#f9fafb";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "600 58px system-ui, -apple-system, 'Segoe UI', sans-serif";
+      ctx.fillText(label, s / 2, s / 2);
+
+      var tex = new THREE.CanvasTexture(c);
+      tex.anisotropy = 8;
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    function makeCubieMaterials(faceInfo) {
+      var mats = [];
+      for (var i = 0; i < 6; i++) {
+        var info = faceInfo[i];
+        if (!info) {
+          mats.push(new THREE.MeshStandardMaterial({
+            color: 0x020617,
+            metalness: 0.7,
+            roughness: 0.4
+          }));
+        } else {
+          var faceKey = info.face;
+          var idx = info.skillIndex;
+          var data = skillsByFace[faceKey][idx];
+          var tex = createSkillTexture(data.short, categoryColors[faceKey]);
+          mats.push(new THREE.MeshStandardMaterial({
+            map: tex,
+            metalness: 0.9,
+            roughness: 0.2,
+            emissive: new THREE.Color(categoryColors[faceKey]).multiplyScalar(0.18),
+            emissiveIntensity: 0.9
+          }));
+        }
+      }
+      return mats;
+    }
+
+    var cubeGroup = new THREE.Group();
+    scene.add(cubeGroup);
+
+    var cubies = [];
+    var cubieSize = 0.9;
+    var gap = 0.08;
+    var step = cubieSize + gap;
+
+    function idx3(row, col) {
+      return row * 3 + col;
+    }
+
+    function indexForFace(axis, sign, xi, yi, zi) {
+      var col, row;
+      if (axis === "z") {
+        col = xi + 1;
+        row = 1 - yi;
+      } else if (axis === "x") {
+        col = (sign === "+") ? -zi + 1 : zi + 1;
+        row = 1 - yi;
+      } else {
+        col = xi + 1;
+        row = (sign === "+") ? -zi + 1 : zi + 1;
+      }
+      return idx3(row, col);
+    }
+
+    for (var xi = -1; xi <= 1; xi++) {
+      for (var yi = -1; yi <= 1; yi++) {
+        for (var zi = -1; zi <= 1; zi++) {
+          var x = xi * step, y = yi * step, z = zi * step;
+          var faceInfo = {};
+
+          if (xi === 1)  faceInfo[0] = { face: "right",  skillIndex: indexForFace("x", "+", xi, yi, zi) };
+          if (xi === -1) faceInfo[1] = { face: "left",   skillIndex: indexForFace("x", "-", xi, yi, zi) };
+          if (yi === 1)  faceInfo[2] = { face: "top",    skillIndex: indexForFace("y", "+", xi, yi, zi) };
+          if (yi === -1) faceInfo[3] = { face: "bottom", skillIndex: indexForFace("y", "-", xi, yi, zi) };
+          if (zi === 1)  faceInfo[4] = { face: "front",  skillIndex: indexForFace("z", "+", xi, yi, zi) };
+          if (zi === -1) faceInfo[5] = { face: "back",   skillIndex: indexForFace("z", "-", xi, yi, zi) };
+
+          var geo = new THREE.BoxGeometry(cubieSize, cubieSize, cubieSize);
+          var mats = makeCubieMaterials(faceInfo);
+          var cubie = new THREE.Mesh(geo, mats);
+          cubie.position.set(x, y, z);
+          cubie.userData.faceInfo = faceInfo;
+          cubeGroup.add(cubie);
+          cubies.push(cubie);
+        }
+      }
+    }
+
+        var isDragging = false, prevX = 0, prevY = 0, velX = 0, velY = 0, damping = 0.9;
+    var autoSpin = true;           // new: auto rotation on by default
+    var autoSpinSpeedY = 0.004;    // slow spin around Y
+    var autoSpinSpeedX = 0.0015;   // slight tilt
+
+
+    function getPoint(e) {
+      return e.touches ? e.touches[0] : e;
+    }
+
+    function onDown(e) {
+      isDragging = true;
+      var p = getPoint(e);
+      prevX = p.clientX;
+      prevY = p.clientY;
+      velX = velY = 0;
+    }
+
+    function onMove(e) {
+      if (!isDragging) return;
+      var p = getPoint(e);
+      var dx = p.clientX - prevX;
+      var dy = p.clientY - prevY;
+      prevX = p.clientX;
+      prevY = p.clientY;
+
+      var s = 0.005;
+      cubeGroup.rotation.y += dx * s;
+      cubeGroup.rotation.x += dy * s;
+      velX = dx * s;
+      velY = dy * s;
+    }
+
+    function onUp() {
+      isDragging = false;
+    }
+
+    canvas.addEventListener("mousedown", onDown);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    canvas.addEventListener("touchstart", onDown, { passive: true });
+    window.addEventListener("touchmove", onMove, { passive: true });
+    window.addEventListener("touchend", onUp);
+    // stop auto spin while user is dragging
+    function onDown(e) {
+      isDragging = true;
+      autoSpin = false;
+      var p = getPoint(e);
+      prevX = p.clientX;
+      prevY = p.clientY;
+      velX = velY = 0;
+    }
+
+    // toggle button: pause / resume auto spin
+    toggleBtn.addEventListener("click", function () {
+      autoSpin = !autoSpin;
+      if (!autoSpin) {
+        toggleBtn.textContent = "Spin/Stop";
+      } else {
+        toggleBtn.textContent = "Spin/Stop";
+      }
+    });
+
+    function onResize() {
+      var r = container.getBoundingClientRect();
+      renderer.setSize(r.width, r.height, false);
+      camera.aspect = r.width / r.height;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", onResize);
+    onResize();
+
+    var currentFace = "front";
+
+    function updateTitle() {
+      var zAxis = new THREE.Vector3(0, 0, 1).applyQuaternion(cubeGroup.quaternion);
+      var xAxis = new THREE.Vector3(1, 0, 0).applyQuaternion(cubeGroup.quaternion);
+      var yAxis = new THREE.Vector3(0, 1, 0).applyQuaternion(cubeGroup.quaternion);
+      var camDir = new THREE.Vector3();
+      camera.getWorldDirection(camDir);
+
+      var cands = [
+        { k: "front",  d: zAxis.clone() },
+        { k: "back",   d: zAxis.clone().negate() },
+        { k: "right",  d: xAxis.clone() },
+        { k: "left",   d: xAxis.clone().negate() },
+        { k: "top",    d: yAxis.clone() },
+        { k: "bottom", d: yAxis.clone().negate() }
+      ];
+
+      var bestKey = currentFace, bestDot = -Infinity;
+      for (var i = 0; i < cands.length; i++) {
+        var dot = cands[i].d.dot(camDir);
+        if (dot > bestDot) {
+          bestDot = dot;
+          bestKey = cands[i].k;
+        }
+      }
+      if (bestKey !== currentFace) {
+        currentFace = bestKey;
+        titleEl.textContent = faceTitleMap[bestKey] || "Skills";
+      }
+    }
+
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+
+    function handleHover(e) {
+      var rect = canvas.getBoundingClientRect();
+      var p = getPoint(e);
+      mouse.x = ((p.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((p.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      var hits = raycaster.intersectObjects(cubies, false);
+
+      if (hits.length > 0) {
+        var obj = hits[0].object;
+        var fi = obj.userData.faceInfo;
+        var faceIdx = hits[0].face.materialIndex;
+        var info = fi[faceIdx];
+        if (info) {
+          var faceKey = info.face;
+          var data = skillsByFace[faceKey][info.skillIndex];
+          tooltipEl.textContent = data.full + " — " + data.project;
+          tooltipEl.style.opacity = "1";
+          tooltipEl.style.left = p.clientX + "px";
+          tooltipEl.style.top = (p.clientY - 12) + "px";
+        }
+      } else {
+        tooltipEl.style.opacity = "0";
+      }
+    }
+
+    canvas.addEventListener("mousemove", handleHover);
+    canvas.addEventListener("touchmove", handleHover, { passive: true });
+    canvas.addEventListener("mouseleave", function () {
+      tooltipEl.style.opacity = "0";
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+            if (!isDragging) {
+        // inertia from last drag
+        cubeGroup.rotation.y += velX;
+        cubeGroup.rotation.x += velY;
+        velX *= damping;
+        velY *= damping;
+
+        // gentle auto spin when enabled
+        if (autoSpin) {
+          cubeGroup.rotation.y += autoSpinSpeedY;
+          cubeGroup.rotation.x += autoSpinSpeedX;
+        }
+      }
+
+
+      renderer.render(scene, camera);
+      updateTitle();
+    }
+    animate();
+  })();
+</script>
+
+
+<div id="skills-tooltip" style="
+  position: fixed;
+  z-index: 80;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(15,23,42,0.96);
+  color: #e5e7eb;
+  border: 1px solid rgba(148,163,184,0.7);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.8);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -130%);
+  transition: opacity 120ms ease-out;
+"></div>
+
+</body>
+</html>
